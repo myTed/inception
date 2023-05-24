@@ -5,8 +5,8 @@ clean:
 	docker compose -f srcs/docker-compose.yml down
 
 fclean:
-	rm -rf  data/*
-	cd srcs && docker volume prune
-	cd srcs && docker image prune -a
+	rm -rf  /home/kyolee/data/*
+	docker volume prune
+	docker image prune -a
 
 .PHONY: clean fclean

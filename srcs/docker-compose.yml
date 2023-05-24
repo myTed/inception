@@ -11,7 +11,7 @@ services:
     volumes:
       - ./requirements/nginx/conf/my.conf:/etc/nginx/http.d/my.conf
       - type: bind
-        source: /home/kyHome/docker_test/subject/inception_3.17/data
+        source: /home/kyolee/data
         target: /data
     tty: true
     networks:
@@ -28,7 +28,7 @@ services:
     volumes:
       - ./requirements/wordpress/conf/www.conf:/etc/php81/php-fpm.d/www.conf
       - type: bind
-        source: /home/kyHome/docker_test/subject/inception_3.17/data
+        source: /home/kyolee/data
         target: /data
     networks:
       - my_network

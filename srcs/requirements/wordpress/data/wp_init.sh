@@ -28,7 +28,6 @@ check_wordpress()
         mv /tmp/wp-config.php .
         wp plugin install redis-cache --activate --path=/data/wordpress
         wp redis enable
-        
         time_echo "[wp_init]" "redis enable"
     fi
 }
