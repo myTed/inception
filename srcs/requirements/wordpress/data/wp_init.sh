@@ -39,13 +39,13 @@ time_echo "[wp_init]" "start ncat server"
 ncat -l -p 1234
 time_echo "[wp_init]" "message recived"
 
+#start e-mail server
+postfix start &
+sleep 1
+
 #check wordpresss and install wordpress
 check_wordpress
 chown -R www_data:www_data /data
-
-#start e-mail server
-postfix start &
-sleep 2
 
 #start php-fpm
 exec php-fpm81 -F;

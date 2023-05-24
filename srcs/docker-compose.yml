@@ -9,7 +9,6 @@ services:
     ports: 
       - 443:443
     volumes:
-      - ./requirements/nginx/conf/my.conf:/etc/nginx/http.d/my.conf
       - type: bind
         source: /home/kyolee/data
         target: /data
@@ -26,7 +25,7 @@ services:
     expose:
        - "9000"
     volumes:
-      - ./requirements/wordpress/conf/www.conf:/etc/php81/php-fpm.d/www.conf
+      #- ./requirements/wordpress/conf/www.conf:/etc/php81/php-fpm.d/www.conf
       - type: bind
         source: /home/kyolee/data
         target: /data
@@ -48,8 +47,8 @@ services:
        - "3306"
     volumes:
       - db_volume:/var/lib/mysql
-      - ./requirements/mariadb/conf/50-server.cnf:/etc/mysql/mariadb.conf.d/50-server.cnf
-      - ./requirements/mariadb/conf/50-client.cnf:/etc/mysql/mariadb.conf.d/50-client.cnf
+        #- ./requirements/mariadb/conf/50-server.cnf:/etc/mysql/mariadb.conf.d/50-server.cnf
+        #- ./requirements/mariadb/conf/50-client.cnf:/etc/mysql/mariadb.conf.d/50-client.cnf
     networks:
       - my_network
     restart: always
@@ -59,8 +58,6 @@ services:
       dockerfile: Dockerfile
     env_file:
       - .env
-    # volumes:
-    #   - bonus_volume:/data
     expose:
       - "21"
       - "20"
@@ -106,7 +103,6 @@ services:
       - prometheus_volume:/data
 volumes:
   db_volume:
-  #bonus_volume:
   prometheus_volume:
 networks:
   my_network:
