@@ -1,0 +1,112 @@
+
+services:
+  nginx_app:
+    build:
+      context: ./requirements/nginx/
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    ports: 
+      - 443:443
+    volumes:
+      - ./requirements/nginx/conf/my.conf:/etc/nginx/http.d/my.conf
+      - type: bind
+        source: /home/kyHome/docker_test/subject/inception_3.17/data
+        target: /data
+    tty: true
+    networks:
+      - my_network
+    restart: always
+  wordpress_app:
+    build:
+      context: ./requirements/wordpress/
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    expose:
+       - "9000"
+    volumes:
+      - ./requirements/wordpress/conf/www.conf:/etc/php81/php-fpm.d/www.conf
+      - type: bind
+        source: /home/kyHome/docker_test/subject/inception_3.17/data
+        target: /data
+    networks:
+      - my_network
+    depends_on:
+      - db_app
+      - nginx_app
+    tty: true
+    restart: always
+  db_app:
+    build:
+      context: ./requirements/mariadb/
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    tty: true
+    expose:
+       - "3306"
+    volumes:
+      - db_volume:/var/lib/mysql
+      - ./requirements/mariadb/conf/50-server.cnf:/etc/mysql/mariadb.conf.d/50-server.cnf
+      - ./requirements/mariadb/conf/50-client.cnf:/etc/mysql/mariadb.conf.d/50-client.cnf
+    networks:
+      - my_network
+    restart: always
+  ftp:
+    build:
+      context: ./requirements/bonus/ftp/
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    # volumes:
+    #   - bonus_volume:/data
+    expose:
+      - "21"
+      - "20"
+    tty: true
+    networks:
+      - my_network
+    restart: always
+  adminer:
+    build:
+      context: ./requirements/bonus/adminer
+      dockerfile: Dockerfile
+    tty: true
+    expose:
+      - "9001"
+    networks:
+      - my_network
+    restart: always
+  redis:
+    build:
+      context: ./requirements/bonus/redis
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    tty: true
+    expose:
+      - "6379"  #for redis server
+      - "9100"  #for node exporter
+    networks:
+      - my_network
+    restart: always
+  prometheus:
+    build:
+      context: ./requirements/bonus/prometheus
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    tty: true
+    expose:
+      - "9090"
+    networks:
+      - my_network
+    volumes:
+      - prometheus_volume:/data
+volumes:
+  db_volume:
+  #bonus_volume:
+  prometheus_volume:
+networks:
+  my_network:
