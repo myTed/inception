@@ -12,7 +12,6 @@ services:
       - type: bind
         source: /home/kyolee/data
         target: /data
-    tty: true
     networks:
       - my_network
     restart: always
@@ -25,7 +24,6 @@ services:
     expose:
        - "9000"
     volumes:
-      #- ./requirements/wordpress/conf/www.conf:/etc/php81/php-fpm.d/www.conf
       - type: bind
         source: /home/kyolee/data
         target: /data
@@ -34,7 +32,6 @@ services:
     depends_on:
       - db_app
       - nginx_app
-    tty: true
     restart: always
   db_app:
     build:
@@ -47,8 +44,6 @@ services:
        - "3306"
     volumes:
       - db_volume:/var/lib/mysql
-        #- ./requirements/mariadb/conf/50-server.cnf:/etc/mysql/mariadb.conf.d/50-server.cnf
-        #- ./requirements/mariadb/conf/50-client.cnf:/etc/mysql/mariadb.conf.d/50-client.cnf
     networks:
       - my_network
     restart: always
@@ -61,7 +56,6 @@ services:
     expose:
       - "21"
       - "20"
-    tty: true
     networks:
       - my_network
     restart: always
@@ -69,7 +63,6 @@ services:
     build:
       context: ./requirements/bonus/adminer
       dockerfile: Dockerfile
-    tty: true
     expose:
       - "9001"
     networks:
@@ -81,7 +74,6 @@ services:
       dockerfile: Dockerfile
     env_file:
       - .env
-    tty: true
     expose:
       - "6379"  #for redis server
       - "9100"  #for node exporter
@@ -94,7 +86,6 @@ services:
       dockerfile: Dockerfile
     env_file:
       - .env
-    tty: true
     expose:
       - "9090"
     networks:

@@ -21,4 +21,3 @@ COPY data/nginx_init.sh /tmp
 RUN  chmod +x /tmp/nginx_init.sh
 
 CMD [ "/tmp/nginx_init.sh" ]
-#CMD ["nginx"]
